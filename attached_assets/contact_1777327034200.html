@@ -1,0 +1,177 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Contact us — seina</title>
+<meta name="description" content="Questions, partnerships, or ready to see seina in action — get in touch." />
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=VT323&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+
+<!-- =========================================================
+     NAV
+========================================================== -->
+<nav class="nav" id="nav">
+  <div class="nav__inner">
+    <a href="index.html" class="brand">seina</a>
+    <div class="nav__links">
+      <a href="product.html">Product</a>
+      <a href="index.html#how">How it works</a>
+    </div>
+    <div class="nav__cta">
+      <a href="login.html" class="login">Log in</a>
+      <a href="book-demo.html" class="btn btn--primary">Book a Demo</a>
+    </div>
+  </div>
+</nav>
+
+<!-- =========================================================
+     HERO
+========================================================== -->
+<header class="hero container reveal">
+  <div class="hero__badges">
+    <span class="tag">Get in Touch</span>
+  </div>
+  <h1>Let's start a conversation.</h1>
+  <p class="lede">Whether you have questions, want to explore a partnership, or are ready to see <b>seina in action</b> — we're here.</p>
+</header>
+
+<!-- =========================================================
+     CONTACT GRID
+========================================================== -->
+<section class="section reveal" style="padding-top:0;">
+  <div class="container">
+    <div class="contact-grid">
+
+      <!-- INFO CARD -->
+      <aside class="contact-card contact-card--info">
+        <span class="label-mono"><i class="pin"></i> Direct Line</span>
+        <h3>Prefer to reach us directly?</h3>
+        <p class="lead">Send us an email — your message lands straight in our inbox, no form required.</p>
+
+        <div class="email-row">
+          <span class="ico">
+            <svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg>
+          </span>
+          <span class="meta">
+            <span>Email</span>
+            <a href="mailto:support@seina.in">support@seina.in</a>
+          </span>
+        </div>
+
+        <div class="response">We typically respond within 24 hours</div>
+      </aside>
+
+      <!-- FORM CARD -->
+      <div class="contact-card">
+        <span class="label-mono"><i class="pin"></i> Message Form</span>
+        <h3 style="margin-bottom:24px;">Send us a message</h3>
+
+        <form class="form" id="contactForm" novalidate>
+          <div class="form__field">
+            <label for="fullName">Full Name <span class="req">*</span></label>
+            <input id="fullName" name="fullName" type="text" placeholder="Jane Doe" required />
+          </div>
+
+          <div class="form__field">
+            <label for="email">Work Email <span class="req">*</span></label>
+            <input id="email" name="email" type="email" placeholder="jane@company.com" required />
+          </div>
+
+          <div class="form__field">
+            <label for="subject">Subject <span class="req">*</span></label>
+            <select id="subject" name="subject" required>
+              <option value="" disabled selected>Choose one</option>
+              <option value="general">General Inquiry</option>
+              <option value="partnership">Partnership</option>
+              <option value="demo">Demo Request</option>
+              <option value="support">Support</option>
+            </select>
+          </div>
+
+          <div class="form__field">
+            <label for="message">Message <span class="req">*</span></label>
+            <textarea id="message" name="message" placeholder="Tell us how we can help" required></textarea>
+          </div>
+
+          <div class="form__success" id="formSuccess">
+            Thanks — your message is on its way. We'll reply within 24 hours.
+          </div>
+
+          <button type="submit" class="btn btn--primary form__submit">
+            Send Message <span class="arrow">→</span>
+          </button>
+        </form>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- =========================================================
+     FOOTER
+========================================================== -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer__grid">
+      <div class="footer__brand">
+        <div class="brand">seina</div>
+        <p>Seina is an applied AI lab building the intelligence layer for influencer marketing. Convert creator-brand matching from an asserted discipline into a measured one, so agencies focus on strategy and brands defend their spend with data.</p>
+        <div class="footer__copy">seina, Inc © 2026 · All Rights Reserved.</div>
+      </div>
+      <div class="footer__links">
+        <div>
+          <h4>About</h4>
+          <ul>
+            <li><a href="product.html">Product</a></li>
+            <li><a href="index.html#how">How it works</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4>Company</h4>
+          <ul>
+            <li><a href="contact.html">Contact us</a></li>
+            <li><a href="terms-of-service.html">Terms of Service</a></li>
+            <li><a href="privacy-policy.html">Privacy Policy</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<!-- Floating chat bubble -->
+<a href="#" class="fab" aria-label="Chat with seina">s</a>
+
+<script>
+  // Sticky-nav border on scroll
+  const nav = document.getElementById('nav');
+  const onScroll = () => nav.classList.toggle('is-scrolled', window.scrollY > 8);
+  window.addEventListener('scroll', onScroll, { passive: true }); onScroll();
+
+  // Scroll reveal
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('is-in'); io.unobserve(e.target); } });
+  }, { threshold: 0.12 });
+  document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+
+  // Form handler — visual confirmation only (no backend wired up)
+  const form = document.getElementById('contactForm');
+  const success = document.getElementById('formSuccess');
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+    if (!form.checkValidity()) { form.reportValidity(); return; }
+    success.classList.add('is-shown');
+    form.querySelector('button[type="submit"]').textContent = 'Sent ✓';
+    form.querySelectorAll('input, select, textarea, button').forEach(el => el.disabled = true);
+  });
+</script>
+
+</body>
+</html>

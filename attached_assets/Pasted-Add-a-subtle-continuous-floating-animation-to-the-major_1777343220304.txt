@@ -1,0 +1,43 @@
+Add a subtle, continuous floating animation to the major visual cards and decorative tiles on the page. The motion should feel calm and ambient — small vertical drift, eased, looping forever, with sibling elements offset so the page feels alive rather than synchronized.
+Animation spec
+A keyframe animation called float-soft translates an element from translateY(0) at 0% and 100% to translateY(-10px) at 50%, easing in and out, looping infinitely. Use will-change: transform for GPU acceleration.
+Per-element timing
+A generic .float utility class runs at 3.6s; variants .float--d2 (0.7s delay) and .float--d3 (1.4s delay) stagger siblings. The .card-illus blueprint cards run at 3.8s with :nth-child(2) delayed 0.7s and :nth-child(3) delayed 1.4s. Each .model-card .illustration runs at 3.2s, staggered 0s / 0.6s / 1.2s by nth-child. The .tile decorative blocks in any flowchart run at 4s, with delays 0 / 0.5 / 1.0 / 1.5 / 2.0 / 2.5s mapped to variants --purple / --yellow / --cyan / --orange / --lime / --ghost.
+Accessibility
+Honor prefers-reduced-motion: reduce. Inside that media query, set animation: none !important on every floating selector so users with motion sensitivity see static elements.
+Drop-in CSS
+css@keyframes float-soft {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-10px); }
+}
+
+.float { animation: float-soft 3.6s ease-in-out infinite; will-change: transform; }
+.float--d2 { animation-delay: 0.7s; }
+.float--d3 { animation-delay: 1.4s; }
+
+.card-illus { animation: float-soft 3.8s ease-in-out infinite; will-change: transform; }
+.cards3 .card-illus:nth-child(2) { animation-delay: 0.7s; }
+.cards3 .card-illus:nth-child(3) { animation-delay: 1.4s; }
+
+.model-card .illustration { animation: float-soft 3.2s ease-in-out infinite; will-change: transform; }
+.cards3 .model-card:nth-child(1) .illustration { animation-delay: 0s; }
+.cards3 .model-card:nth-child(2) .illustration { animation-delay: 0.6s; }
+.cards3 .model-card:nth-child(3) .illustration { animation-delay: 1.2s; }
+
+.tile { animation: float-soft 4s ease-in-out infinite; will-change: transform; }
+.tile--purple { animation-delay: 0s; }
+.tile--yellow { animation-delay: 0.5s; }
+.tile--cyan   { animation-delay: 1.0s; }
+.tile--orange { animation-delay: 1.5s; }
+.tile--lime   { animation-delay: 2.0s; }
+.tile--ghost  { animation-delay: 2.5s; }
+
+@media (prefers-reduced-motion: reduce) {
+  .card-illus,
+  .model-card .illustration,
+  .tile,
+  .float { animation: none !important; }
+}
+Apply the .float class to any standalone preview or illustration card that isn't already covered by the auto-targeted selectors above (for example, dashboard mockups inside split sections). Use .float--d2 and .float--d3 to stagger siblings so adjacent floating elements don't move in lockstep.
+Constraints to respect
+Don't apply the animation to elements that already have a hover or layout transform — the animation will fight with the existing transform. If a card has a hover lift, animate a child element (the inner illustration or preview) instead of the card itself. Keep amplitude at 10px; larger floats look unprofessional on info-dense layouts. Keep cycle durations between 3 and 4.5 seconds — slower than that feels sleepy, faster feels jittery.

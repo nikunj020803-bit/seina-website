@@ -1,0 +1,314 @@
+openapi: 3.1.0
+info:
+  # Do not change the title, if the title changes, the import paths will be broken
+  title: Api
+  version: 0.1.0
+  description: API specification for seina website
+servers:
+  - url: /api
+    description: Base API path
+tags:
+  - name: health
+    description: Health operations
+  - name: auth
+    description: Authentication operations
+  - name: demo-requests
+    description: Demo request operations
+  - name: contact
+    description: Contact form operations
+paths:
+  /healthz:
+    get:
+      operationId: healthCheck
+      tags: [health]
+      summary: Health check
+      description: Returns server health status
+      responses:
+        "200":
+          description: Healthy
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HealthStatus"
+
+  /auth/login:
+    post:
+      operationId: login
+      tags: [auth]
+      summary: Log in with email and password
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/LoginBody"
+      responses:
+        "200":
+          description: Login successful
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AuthResponse"
+        "401":
+          description: Invalid credentials
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /auth/logout:
+    post:
+      operationId: logout
+      tags: [auth]
+      summary: Log out current user
+      responses:
+        "200":
+          description: Logged out
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MessageResponse"
+
+  /auth/me:
+    get:
+      operationId: getMe
+      tags: [auth]
+      summary: Get current authenticated user
+      responses:
+        "200":
+          description: Current user info
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UserResponse"
+        "401":
+          description: Not authenticated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /demo-requests:
+    post:
+      operationId: createDemoRequest
+      tags: [demo-requests]
+      summary: Submit a demo request
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateDemoRequestBody"
+      responses:
+        "201":
+          description: Demo request created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DemoRequest"
+        "400":
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+    get:
+      operationId: listDemoRequests
+      tags: [demo-requests]
+      summary: List all demo requests (admin)
+      responses:
+        "200":
+          description: List of demo requests
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/DemoRequest"
+
+  /contact:
+    post:
+      operationId: createContactMessage
+      tags: [contact]
+      summary: Submit a contact form message
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateContactMessageBody"
+      responses:
+        "201":
+          description: Contact message created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ContactMessage"
+        "400":
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+components:
+  schemas:
+    HealthStatus:
+      type: object
+      properties:
+        status:
+          type: string
+      required:
+        - status
+
+    LoginBody:
+      type: object
+      properties:
+        email:
+          type: string
+          format: email
+        password:
+          type: string
+      required:
+        - email
+        - password
+
+    AuthResponse:
+      type: object
+      properties:
+        user:
+          $ref: "#/components/schemas/UserResponse"
+        message:
+          type: string
+      required:
+        - user
+        - message
+
+    UserResponse:
+      type: object
+      properties:
+        id:
+          type: string
+        email:
+          type: string
+        created_at:
+          type: string
+      required:
+        - id
+        - email
+        - created_at
+
+    MessageResponse:
+      type: object
+      properties:
+        message:
+          type: string
+      required:
+        - message
+
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          type: string
+      required:
+        - error
+
+    CreateDemoRequestBody:
+      type: object
+      properties:
+        full_name:
+          type: string
+        email:
+          type: string
+          format: email
+        company:
+          type: string
+        role:
+          type: string
+          enum: [agency, b2b-brand, solo-marketer, other]
+        team_size:
+          type: string
+          enum: [just-me, 2-5, 6-15, 16-50, 51+]
+        demo_focus:
+          type: string
+        timeslot:
+          type: string
+      required:
+        - full_name
+        - email
+        - company
+        - role
+        - team_size
+
+    DemoRequest:
+      type: object
+      properties:
+        id:
+          type: integer
+        full_name:
+          type: string
+        email:
+          type: string
+        company:
+          type: string
+        role:
+          type: string
+        team_size:
+          type: string
+        demo_focus:
+          type: string
+        timeslot:
+          type: string
+        created_at:
+          type: string
+      required:
+        - id
+        - full_name
+        - email
+        - company
+        - role
+        - team_size
+        - created_at
+
+    CreateContactMessageBody:
+      type: object
+      properties:
+        full_name:
+          type: string
+        email:
+          type: string
+          format: email
+        subject:
+          type: string
+          enum: [general, partnership, demo, support]
+        message:
+          type: string
+      required:
+        - full_name
+        - email
+        - subject
+        - message
+
+    ContactMessage:
+      type: object
+      properties:
+        id:
+          type: integer
+        full_name:
+          type: string
+        email:
+          type: string
+        subject:
+          type: string
+        message:
+          type: string
+        created_at:
+          type: string
+      required:
+        - id
+        - full_name
+        - email
+        - subject
+        - message
+        - created_at

@@ -1,0 +1,14 @@
+uploads = []
+generated = []
+
+[[outputs]]
+id = "wNgE1kknfGN1BSp0PmMSz"
+uri = "file://seina-website.tar.gz"
+type = "unspecified"
+title = "seina-website — full source code"
+
+[[outputs]]
+id = "rpGMJAaPCYg_sCrF4Jt7y"
+uri = "file://seina-website-vercel.tar.gz"
+type = "unspecified"
+title = "seina-website — Vercel-ready source code"
